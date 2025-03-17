@@ -1,0 +1,2 @@
+Kubernetes/kubectl filter=lfs diff=lfs merge=lfs -text
+Kubernetes/awscliv2.zip filter=lfs diff=lfs merge=lfs -text
