@@ -13,19 +13,8 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Log out of Docker (to avoid caching)
-        run: docker logout
-
-      - name: Debug Secret Length
-        run: |
-          echo "Username length: ${{ secrets.DOCKER_USERNAME && secrets.DOCKER_USERNAME.length || 0 }}"
-          echo "Password length: ${{ secrets.DOCKER_PASSWORD && secrets.DOCKER_PASSWORD.length || 0 }}"
-
-      - name: Log in to Docker Hub (Password via stdin)
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin registry-1.docker.io
-
-      - name: Debug Docker Login (Direct Password, more verbose)
-        run: docker login -D -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}" registry-1.docker.io
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build and Push Docker Image
         run: |
@@ -39,3 +28,4 @@ jobs:
           kubectl set image deployment/wisecow-deployment wisecow-container=khuntia1994/wisecow:latest --record
           kubectl rollout status deployment/wisecow-deployment
           kubectl get pods -o wide
+
