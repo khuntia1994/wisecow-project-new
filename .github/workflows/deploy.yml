@@ -13,15 +13,18 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Docker
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and Push Docker Image
         run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
           docker build -t khuntia1994/wisecow:latest .
           docker push khuntia1994/wisecow:latest
 
-      - name: Configure Kubernetes
+      - name: Configure Kubernetes and Deploy
         run: |
           echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > kubeconfig
           export KUBECONFIG=kubeconfig
-          kubectl rollout restart deployment wisecow-deployment
+          kubectl set image deployment/wisecow-deployment wisecow-container=khuntia1994/wisecow:latest --record
+          kubectl rollout status deployment/wisecow-deployment
           kubectl get pods -o wide
