@@ -28,3 +28,4 @@ jobs:
           kubectl set image deployment/wisecow-deployment wisecow-container=khuntia1994/wisecow:latest --record
           kubectl rollout status deployment/wisecow-deployment
           kubectl get pods -o wide
+
