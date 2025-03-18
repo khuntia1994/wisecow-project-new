@@ -23,9 +23,10 @@ jobs:
 
       - name: Configure Kubernetes and Deploy
         run: |
-          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > kubeconfig
-          export KUBECONFIG=kubeconfig
-          kubectl set image deployment/wisecow-deployment wisecow-container=khuntia1994/wisecow:latest --record
+          echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > $HOME/.kube/config
+          export KUBECONFIG=$HOME/.kube/config
+          
+          kubectl set image deployment/wisecow-deployment wisecow-container=khuntia1234/wisecow:latest --record
           kubectl rollout status deployment/wisecow-deployment
+          
           kubectl get pods -o wide
-
