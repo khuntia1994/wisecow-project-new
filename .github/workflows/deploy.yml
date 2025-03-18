@@ -18,8 +18,8 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t khuntia1994/wisecow:latest .
-          docker push khuntia1994/wisecow:latest
+          docker build -t khuntia1234/wisecow:latest .
+          docker push khuntia1234/wisecow:latest
 
       - name: Configure Kubernetes and Deploy
         run: |
